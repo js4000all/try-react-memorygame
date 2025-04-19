@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import CardGrid from './CardGrid';
 import GameInfo from './GameInfo';
-import Celebration from './Celebration';
 import { useToast } from '../contexts/ToastContext';
 import styles from './GameBoard.module.css';
 
@@ -17,10 +16,13 @@ const INITIAL_GAME_STATE: GameState = {
   isGameComplete: false,
 };
 
-const GameBoard: React.FC = () => {
+interface GameBoardProps {
+  onGameComplete: () => void;
+}
+
+const GameBoard: React.FC<GameBoardProps> = ({ onGameComplete }) => {
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE);
   const [gameKey, setGameKey] = useState(0);
-  const [showCelebration, setShowCelebration] = useState(false);
   const [pairs, setPairs] = useState(4);
   const { showToast } = useToast();
 
@@ -34,7 +36,7 @@ const GameBoard: React.FC = () => {
         isGameComplete: prev.matches + 1 === pairs,
       };
       if (newState.isGameComplete) {
-        setShowCelebration(true);
+        onGameComplete();
       }
       return newState;
     });
@@ -52,7 +54,6 @@ const GameBoard: React.FC = () => {
     setPairs(newPairs);
     setGameState(INITIAL_GAME_STATE);
     setGameKey(prev => prev + 1);
-    setShowCelebration(false);
   };
 
   return (
@@ -70,9 +71,6 @@ const GameBoard: React.FC = () => {
         onMatch={handleMatch}
         onMismatch={handleMismatch}
       />
-      {showCelebration && (
-        <Celebration onClose={() => setShowCelebration(false)} />
-      )}
     </div>
   );
 };
