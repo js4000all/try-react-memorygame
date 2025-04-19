@@ -38,9 +38,8 @@ const GameBoard: React.FC = () => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   };
 
-  const handleMatch = (card1: any, card2: any) => {
-    console.log(`マッチしました！: ${card1.value} と ${card2.value}`);
-    showToast(`マッチしました！: ${card1.value} と ${card2.value}`, 'success');
+  const handleMatch = (_card1: any, _card2: any) => {
+    showToast(`マッチしました！`, 'success');
     setGameState(prev => ({
       ...prev,
       matches: prev.matches + 1,
@@ -49,9 +48,8 @@ const GameBoard: React.FC = () => {
     }));
   };
 
-  const handleMismatch = (card1: any, card2: any) => {
-    console.log(`残念！: ${card1.value} と ${card2.value} は違います`);
-    showToast(`残念！: ${card1.value} と ${card2.value} は違います`, 'error');
+  const handleMismatch = (_card1: any, _card2: any) => {
+    showToast(`残念！違います`, 'error');
     setGameState(prev => ({
       ...prev,
       moves: prev.moves + 1,
