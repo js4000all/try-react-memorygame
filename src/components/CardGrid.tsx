@@ -22,7 +22,7 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
   }));
 
   const [cards, setCards] = useState<Card[]>(initialCards);
-  const [selectedCards, setSelectedCards] = useState<number[]>([]);
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [isChecking, setIsChecking] = useState(false);
 
   const handleCardClick = async (id: number, isFlipped: boolean) => {
@@ -32,7 +32,7 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
     if (isChecking) return;
 
     // 2枚目をめくる場合は、先にisCheckingをtrueに
-    if (selectedCards.length === 1) {
+    if (selectedCard !== null) {
       setIsChecking(true);
     }
 
@@ -43,19 +43,17 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
     setCards(newCards);
 
     // 選択中のカードを更新
-    const newSelectedCards = [...selectedCards, id];
-    setSelectedCards(newSelectedCards);
+    const newSelectedCard = selectedCard === null ? id : null;
+    setSelectedCard(newSelectedCard);
 
     // 2枚目をめくった場合
-    if (newSelectedCards.length === 2) {
-      const [card1, card2] = newSelectedCards.map(id => 
-        newCards.find(c => c.id === id)!
-      );
+    if (selectedCard !== null) {
+      const card1 = newCards.find(c => c.id === selectedCard)!;
+      const card2 = newCards.find(c => c.id === id)!;
 
       // マッチ判定
       if (card1.value === card2.value) {
         onMatch(card1, card2);
-        setSelectedCards([]);
         setIsChecking(false);
       } else {
         onMismatch(card1, card2);
@@ -63,10 +61,9 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         setCards(prevCards => 
           prevCards.map(c => 
-            newSelectedCards.includes(c.id) ? { ...c, isFlipped: false } : c
+            c.id === selectedCard || c.id === id ? { ...c, isFlipped: false } : c
           )
         );
-        setSelectedCards([]);
         setIsChecking(false);
       }
     }
