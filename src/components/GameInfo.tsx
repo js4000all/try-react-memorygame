@@ -12,8 +12,14 @@ const GameInfo: React.FC<GameInfoProps> = ({ moves, matches, isGameComplete, onR
   return (
     <div className={styles.gameInfo}>
       <div className={styles.stats}>
-        <p>手数: {moves}</p>
-        <p>マッチ: {matches}/4</p>
+        <div className={styles.statItem}>
+          <span className={styles.statLabel}>手数</span>
+          <span className={styles.statValue}>{moves}</span>
+        </div>
+        <div className={styles.statItem}>
+          <span className={styles.statLabel}>マッチ</span>
+          <span className={styles.statValue}>{matches}/4</span>
+        </div>
       </div>
       {isGameComplete && (
         <div className={styles.completionMessage}>
