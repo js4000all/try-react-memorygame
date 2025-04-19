@@ -1,0 +1,12 @@
+.gameBoard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.gameBoard h1 {
+  margin-bottom: 2rem;
+  color: #333;
+  font-size: 2.5rem;
+} 
