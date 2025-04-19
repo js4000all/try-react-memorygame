@@ -21,6 +21,7 @@ const GameBoard: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE);
   const [gameKey, setGameKey] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [pairs, setPairs] = useState(4);
   const { showToast } = useToast();
 
   const handleMatch = (_card1: any, _card2: any) => {
@@ -30,7 +31,7 @@ const GameBoard: React.FC = () => {
         ...prev,
         matches: prev.matches + 1,
         moves: prev.moves + 1,
-        isGameComplete: prev.matches + 1 === 4,
+        isGameComplete: prev.matches + 1 === pairs,
       };
       if (newState.isGameComplete) {
         setShowCelebration(true);
@@ -47,7 +48,8 @@ const GameBoard: React.FC = () => {
     }));
   };
 
-  const handleRestart = () => {
+  const handleRestart = (newPairs: number) => {
+    setPairs(newPairs);
     setGameState(INITIAL_GAME_STATE);
     setGameKey(prev => prev + 1);
     setShowCelebration(false);
@@ -59,12 +61,12 @@ const GameBoard: React.FC = () => {
       <GameInfo
         moves={gameState.moves}
         matches={gameState.matches}
-        isGameComplete={gameState.isGameComplete}
         onRestart={handleRestart}
+        pairs={pairs}
       />
       <CardGrid
         key={gameKey}
-        pairs={4}
+        pairs={pairs}
         onMatch={handleMatch}
         onMismatch={handleMismatch}
       />
