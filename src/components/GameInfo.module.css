@@ -32,64 +32,6 @@
   color: #333;
 }
 
-.controls {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-}
-
-.pairsControl {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.pairsControl label {
-  font-size: 0.875rem;
-  color: #666;
-}
-
-.slider {
-  width: 100%;
-  height: 8px;
-  -webkit-appearance: none;
-  appearance: none;
-  background: #ddd;
-  outline: none;
-  border-radius: 4px;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background: #4CAF50;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.slider::-webkit-slider-thumb:hover {
-  background: #45a049;
-}
-
-.slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #4CAF50;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.slider::-moz-range-thumb:hover {
-  background: #45a049;
-}
-
 .completionMessage {
   margin-top: 1rem;
   padding: 1rem;
