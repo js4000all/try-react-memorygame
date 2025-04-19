@@ -68,7 +68,7 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
   };
 
   return (
-    <div className={styles.grid} style={{ gridTemplateColumns: `repeat(${pairs}, 1fr)` }}>
+    <div className={styles.grid} style={{ gridTemplateColumns: `repeat(${pairs}, 0.2fr)` }}>
       {cards.map((card) => (
         <Card
           key={card.id}

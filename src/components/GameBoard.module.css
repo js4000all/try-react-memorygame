@@ -1,12 +1,25 @@
 .gameBoard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 .gameBoard h1 {
   margin-bottom: 2rem;
   color: #333;
   font-size: 2.5rem;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 800px;
+  justify-items: center;
+  padding: 1rem;
 } 
