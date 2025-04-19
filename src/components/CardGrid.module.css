@@ -1,9 +1,12 @@
 .grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
   max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
+  justify-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 600px) {
