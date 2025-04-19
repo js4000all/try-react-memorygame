@@ -35,8 +35,11 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
     newCards[clickedCardIndex] = { ...card, isFlipped: true };
     setCards(newCards);
 
-    // 2枚目をめくった場合
-    if (selectedCardIndex !== null) {
+    if (selectedCardIndex === null) {
+      // 1枚目をめくった場合
+      setSelectedCardIndex(clickedCardIndex);
+    } else {
+      // 2枚目をめくった場合
       setIsChecking(true);
       const card1 = newCards[selectedCardIndex];
       const card2 = newCards[clickedCardIndex];
@@ -57,9 +60,6 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
       }
       setSelectedCardIndex(null);
       setIsChecking(false);
-    } else {
-      // 1枚目をめくった場合
-      setSelectedCardIndex(clickedCardIndex);
     }
   };
 
