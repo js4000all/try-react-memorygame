@@ -4,13 +4,18 @@ import GameInfo from './GameInfo';
 import { useToast } from '../contexts/ToastContext';
 import styles from './GameBoard.module.css';
 
+interface GameState {
+  moves: number;
+  matches: number;
+}
+
 interface GameBoardProps {
   pairs: number;
   onGameComplete: () => void;
 }
 
 const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
-  const [gameState, setGameState] = useState({
+  const [gameState, setGameState] = useState<GameState>({
     moves: 0,
     matches: 0,
   });
