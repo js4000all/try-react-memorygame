@@ -4,13 +4,14 @@ import styles from './Card.module.css';
 interface CardProps {
   value: string;
   isFlipped: boolean;
+  isSelected: boolean;
   onClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ value, isFlipped, onClick }) => {
+const Card: React.FC<CardProps> = ({ value, isFlipped, isSelected, onClick }) => {
   return (
     <div 
-      className={`${styles.card} ${isFlipped ? styles.flipped : ''}`}
+      className={`${styles.card} ${isFlipped ? styles.flipped : ''} ${isSelected ? styles.selected : ''}`}
       onClick={onClick}
     >
       <div className={styles.cardInner}>

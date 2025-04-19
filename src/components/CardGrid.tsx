@@ -74,6 +74,7 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
           key={card.id}
           value={card.value}
           isFlipped={card.isFlipped}
+          isSelected={selectedCardIndex === card.id}
           onClick={() => handleCardClick(card.id)}
         />
       ))}
