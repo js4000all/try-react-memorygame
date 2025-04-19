@@ -15,6 +15,7 @@ const GameBoard: React.FC = () => {
     matches: 0,
     isGameComplete: false,
   });
+  const [gameKey, setGameKey] = useState(0);
 
   const handleMatch = (card1: any, card2: any) => {
     console.log(`マッチしました！: ${card1.value} と ${card2.value}`);
@@ -40,6 +41,7 @@ const GameBoard: React.FC = () => {
       matches: 0,
       isGameComplete: false,
     });
+    setGameKey(prev => prev + 1);
   };
 
   return (
@@ -52,6 +54,7 @@ const GameBoard: React.FC = () => {
         onRestart={handleRestart}
       />
       <CardGrid
+        key={gameKey}
         pairs={4}
         onMatch={handleMatch}
         onMismatch={handleMismatch}
