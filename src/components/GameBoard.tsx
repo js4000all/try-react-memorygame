@@ -10,7 +10,6 @@ interface GameBoardProps {
 }
 
 const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
-  const [gameKey, setGameKey] = useState(0);
   const [gameState, setGameState] = useState({
     moves: 0,
     matches: 0,
@@ -48,7 +47,6 @@ const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
         pairs={pairs}
       />
       <CardGrid
-        key={gameKey}
         pairs={pairs}
         onMatch={handleMatch}
         onMismatch={handleMismatch}

@@ -6,6 +6,7 @@ import Celebration from './Celebration';
 const GameManager: React.FC = () => {
   const [showCelebration, setShowCelebration] = useState(false);
   const [pairs, setPairs] = useState(4);
+  const [gameKey, setGameKey] = useState(0);
 
   const handleGameComplete = () => {
     setShowCelebration(true);
@@ -13,11 +14,13 @@ const GameManager: React.FC = () => {
 
   const handleRestart = (newPairs: number) => {
     setPairs(newPairs);
+    setGameKey(prev => prev + 1);
   };
 
   return (
     <>
       <GameBoard
+        key={gameKey}
         pairs={pairs}
         onGameComplete={handleGameComplete}
       />
