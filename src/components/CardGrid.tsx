@@ -30,6 +30,11 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
     const card = cards[clickedCardIndex];  // インデックスアクセス
     if (!card || card.isFlipped || isChecking) return;
 
+    if(selectedCardIndex !== null) {
+      // 2枚目をめくった場合
+      setIsChecking(true);
+    }
+
     // カードをめくる
     const newCards = [...cards];
     newCards[clickedCardIndex] = { ...card, isFlipped: true };
@@ -40,7 +45,6 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
       setSelectedCardIndex(clickedCardIndex);
     } else {
       // 2枚目をめくった場合
-      setIsChecking(true);
       const card1 = newCards[selectedCardIndex];
       const card2 = newCards[clickedCardIndex];
 
