@@ -15,9 +15,12 @@ interface CardGridProps {
 }
 
 const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
+  const values = Array.from({ length: pairs }, (_, i) => String.fromCharCode(65 + i));
+  const shuffledValues = [...values, ...values].sort(() => Math.random() - 0.5);
+  
   const initialCards: Card[] = Array.from({ length: pairs * 2 }, (_, index) => ({
-    id: index,  // インデックスをそのままIDとして使用
-    value: String.fromCharCode(65 + (index % pairs)),
+    id: index,
+    value: shuffledValues[index],
     isFlipped: false
   }));
 
