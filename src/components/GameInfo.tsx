@@ -21,11 +21,6 @@ const GameInfo: React.FC<GameInfoProps> = ({ moves, matches, isGameComplete, onR
           <span className={styles.statValue}>{matches}/4</span>
         </div>
       </div>
-      {isGameComplete && (
-        <div className={styles.completionMessage}>
-          <p>おめでとうございます！ゲームクリアですわ！</p>
-        </div>
-      )}
       <button onClick={onRestart} className={styles.restartButton}>
         もう一度遊ぶ
       </button>

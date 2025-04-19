@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CardGrid from './CardGrid';
 import GameInfo from './GameInfo';
+import Celebration from './Celebration';
 import { useToast } from '../contexts/ToastContext';
 import styles from './GameBoard.module.css';
 
@@ -19,16 +20,23 @@ const INITIAL_GAME_STATE: GameState = {
 const GameBoard: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE);
   const [gameKey, setGameKey] = useState(0);
+  const [showCelebration, setShowCelebration] = useState(false);
   const { showToast } = useToast();
 
   const handleMatch = (_card1: any, _card2: any) => {
     showToast(`マッチしました！`, 'success');
-    setGameState(prev => ({
-      ...prev,
-      matches: prev.matches + 1,
-      moves: prev.moves + 1,
-      isGameComplete: prev.matches + 1 === 4,
-    }));
+    setGameState(prev => {
+      const newState = {
+        ...prev,
+        matches: prev.matches + 1,
+        moves: prev.moves + 1,
+        isGameComplete: prev.matches + 1 === 4,
+      };
+      if (newState.isGameComplete) {
+        setShowCelebration(true);
+      }
+      return newState;
+    });
   };
 
   const handleMismatch = (_card1: any, _card2: any) => {
@@ -42,6 +50,7 @@ const GameBoard: React.FC = () => {
   const handleRestart = () => {
     setGameState(INITIAL_GAME_STATE);
     setGameKey(prev => prev + 1);
+    setShowCelebration(false);
   };
 
   return (
@@ -59,6 +68,9 @@ const GameBoard: React.FC = () => {
         onMatch={handleMatch}
         onMismatch={handleMismatch}
       />
+      {showCelebration && (
+        <Celebration onClose={() => setShowCelebration(false)} />
+      )}
     </div>
   );
 };
