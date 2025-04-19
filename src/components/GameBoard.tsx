@@ -9,12 +9,14 @@ interface GameState {
   isGameComplete: boolean;
 }
 
+const INITIAL_GAME_STATE: GameState = {
+  moves: 0,
+  matches: 0,
+  isGameComplete: false,
+};
+
 const GameBoard: React.FC = () => {
-  const [gameState, setGameState] = useState<GameState>({
-    moves: 0,
-    matches: 0,
-    isGameComplete: false,
-  });
+  const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE);
   const [gameKey, setGameKey] = useState(0);
 
   const handleMatch = (card1: any, card2: any) => {
@@ -36,11 +38,7 @@ const GameBoard: React.FC = () => {
   };
 
   const handleRestart = () => {
-    setGameState({
-      moves: 0,
-      matches: 0,
-      isGameComplete: false,
-    });
+    setGameState(INITIAL_GAME_STATE);
     setGameKey(prev => prev + 1);
   };
 
