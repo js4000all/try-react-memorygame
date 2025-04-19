@@ -69,6 +69,26 @@
   background-position: 100% 100%;
 }
 
+.cardFront.E {
+  background-image: url('/assets/card-face03.png');
+  background-position: 0 0;
+}
+
+.cardFront.F {
+  background-image: url('/assets/card-face03.png');
+  background-position: 100% 0;
+}
+
+.cardFront.G {
+  background-image: url('/assets/card-face03.png');
+  background-position: 0 100%;
+}
+
+.cardFront.H {
+  background-image: url('/assets/card-face03.png');
+  background-position: 100% 100%;
+}
+
 .cardBack {
   background-color: #4a90e2;
 } 
