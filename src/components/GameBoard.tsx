@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
 import CardGrid from './CardGrid';
 import GameInfo from './GameInfo';
-import Toast from './Toast';
+import { useToast } from '../contexts/ToastContext';
 import styles from './GameBoard.module.css';
 
 interface GameState {
   moves: number;
   matches: number;
   isGameComplete: boolean;
-}
-
-interface ToastState {
-  id: number;
-  message: string;
-  type: 'success' | 'error';
 }
 
 const INITIAL_GAME_STATE: GameState = {
@@ -25,18 +19,7 @@ const INITIAL_GAME_STATE: GameState = {
 const GameBoard: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE);
   const [gameKey, setGameKey] = useState(0);
-  const [toasts, setToasts] = useState<ToastState[]>([]);
-  const [toastId, setToastId] = useState(0);
-
-  const showToast = (message: string, type: 'success' | 'error') => {
-    const id = toastId;
-    setToastId(prev => prev + 1);
-    setToasts(prev => [...prev, { id, message, type }]);
-  };
-
-  const removeToast = (id: number) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
-  };
+  const { showToast } = useToast();
 
   const handleMatch = (_card1: any, _card2: any) => {
     showToast(`マッチしました！`, 'success');
@@ -76,14 +59,6 @@ const GameBoard: React.FC = () => {
         onMatch={handleMatch}
         onMismatch={handleMismatch}
       />
-      {toasts.map(toast => (
-        <Toast
-          key={toast.id}
-          message={toast.message}
-          type={toast.type}
-          onClose={() => removeToast(toast.id)}
-        />
-      ))}
     </div>
   );
 };
