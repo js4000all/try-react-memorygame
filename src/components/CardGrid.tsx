@@ -25,12 +25,11 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
   const [selectedCards, setSelectedCards] = useState<number[]>([]);
   const [isChecking, setIsChecking] = useState(false);
 
-  const handleCardClick = async (id: number) => {
+  const handleCardClick = async (id: number, isFlipped: boolean) => {
+    // すでにめくられているカードは無視
+    if (isFlipped) return;
     // ガードチェック（isCheckingのチェックを先に行う）
     if (isChecking) return;
-    
-    const card = cards.find(c => c.id === id);
-    if (!card || card.isFlipped) return;
 
     // 2枚目をめくる場合は、先にisCheckingをtrueに
     if (selectedCards.length === 1) {
@@ -80,7 +79,7 @@ const CardGrid: React.FC<CardGridProps> = ({ pairs, onMatch, onMismatch }) => {
           key={card.id}
           value={card.value}
           isFlipped={card.isFlipped}
-          onClick={() => handleCardClick(card.id)}
+          onClick={() => handleCardClick(card.id, card.isFlipped)}
         />
       ))}
     </div>
