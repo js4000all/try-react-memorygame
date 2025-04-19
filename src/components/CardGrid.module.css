@@ -1,0 +1,20 @@
+.grid {
+  display: grid;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  aspect-ratio: 1;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 400px) {
+  .grid {
+    max-width: 400px;
+  }
+} 
