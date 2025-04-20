@@ -44,7 +44,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
     const { state: newState, flipResult } = flipCard(gameState, cardHolder);
     switch (flipResult.kind) {
       case 'match':
-        showToast(`マッチしました！`, 'success');
+        showToast(`マッチしました！ [${flipResult.cardHolder1.card.rarity}]`, 'success');
         break;
       case 'unmatch':
         showToast(`残念！違います`, 'error');
