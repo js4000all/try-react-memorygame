@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardGrid from './CardGrid';
 import GameInfo from './GameInfo';
 import { useToast } from '@/contexts/ToastContext';
@@ -12,22 +12,50 @@ interface GameBoardProps {
   onGameComplete: () => void;
 }
 
+interface UIState {
+  isAnimating: boolean;
+  pendingUnflipCardHolderIds: number[];
+}
+
 const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
   const [gameState, setGameState] = useState(initializeGame(pairs, getCardProvider()));
+  const [uiState, setUiState] = useState<UIState>({
+    isAnimating: false,
+    pendingUnflipCardHolderIds: [] //一時的にフリップ状態にするカード＝マッチしなかったカード
+  });
   const { showToast } = useToast();
 
+  useEffect(() => {
+    if (uiState.pendingUnflipCardHolderIds.length > 0) {
+      const timer = setTimeout(() => {
+        setUiState(_prev => ({
+          isAnimating: false,
+          pendingUnflipCardHolderIds: [],
+        }));
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [uiState.pendingUnflipCardHolderIds]);
+
   const handleCardClick = (cardHolder: ICardHolder) => {
-    const {state: newState, flipResult} = flipCard(gameState, cardHolder);
+    if (uiState.isAnimating) return;
+
+    const { state: newState, flipResult } = flipCard(gameState, cardHolder);
     switch (flipResult.kind) {
       case 'match':
         showToast(`マッチしました！`, 'success');
         break;
       case 'unmatch':
         showToast(`残念！違います`, 'error');
+        setUiState(_prev => ({
+          isAnimating: true,
+          pendingUnflipCardHolderIds: [flipResult.cardHolder1.id, flipResult.cardHolder2.id],
+        }));
         break;
     }
     setGameState(newState);
-    if(newState.gameCompleted) {
+    if (newState.gameCompleted) {
       onGameComplete();
     }
   };
@@ -42,6 +70,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
       />
       <CardGrid
         state={gameState}
+        pendingUnflipCardHolderIds={uiState.pendingUnflipCardHolderIds}
         onCardClick={handleCardClick}
       />
     </div>
