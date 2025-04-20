@@ -1,3 +1,26 @@
+# About This Memory Game
+
+このメモリーゲームは、ReactとTypeScriptの習作として作られた、カードをめくってペアを見つけるシンプルなゲームです。
+
+## ゲームの特徴
+
+- レアリティ（コモン、レア、エピック）の異なるカードが登場
+- シンプルで直感的な操作感
+
+## 遊び方
+
+1. カードをクリックしてめくります
+2. 同じ図柄のカードを探します
+4. すべてのペアを見つけるとゲームクリア！
+5. いつでもペア数を変えてリスタートできます
+
+## 技術スタック
+
+- React
+- TypeScript
+- Vite
+- CSS Modules
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

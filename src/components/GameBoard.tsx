@@ -1,58 +1,63 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardGrid from './CardGrid';
 import GameInfo from './GameInfo';
-import Celebration from './Celebration';
-import { useToast } from '../contexts/ToastContext';
+import { useToast } from '@/contexts/ToastContext';
 import styles from './GameBoard.module.css';
+import { flipCard, initializeGame } from '@/domain/Game';
+import { getCardProvider } from '@/ui/Card';
+import { ICardHolder } from '@/types/gameTypes';
 
-interface GameState {
-  moves: number;
-  matches: number;
-  isGameComplete: boolean;
+interface GameBoardProps {
+  pairs: number;
+  onGameComplete: () => void;
 }
 
-const INITIAL_GAME_STATE: GameState = {
-  moves: 0,
-  matches: 0,
-  isGameComplete: false,
-};
+interface UIState {
+  isAnimating: boolean;
+  pendingUnflipCardHolderIds: number[];
+}
 
-const GameBoard: React.FC = () => {
-  const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE);
-  const [gameKey, setGameKey] = useState(0);
-  const [showCelebration, setShowCelebration] = useState(false);
-  const [pairs, setPairs] = useState(4);
+const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
+  const [gameState, setGameState] = useState(initializeGame(pairs, getCardProvider()));
+  const [uiState, setUiState] = useState<UIState>({
+    isAnimating: false,
+    pendingUnflipCardHolderIds: [] //一時的にフリップ状態にするカード＝マッチしなかったカード
+  });
   const { showToast } = useToast();
 
-  const handleMatch = (_card1: any, _card2: any) => {
-    showToast(`マッチしました！`, 'success');
-    setGameState(prev => {
-      const newState = {
-        ...prev,
-        matches: prev.matches + 1,
-        moves: prev.moves + 1,
-        isGameComplete: prev.matches + 1 === pairs,
-      };
-      if (newState.isGameComplete) {
-        setShowCelebration(true);
-      }
-      return newState;
-    });
-  };
+  useEffect(() => {
+    if (uiState.pendingUnflipCardHolderIds.length > 0) {
+      const timer = setTimeout(() => {
+        setUiState(_prev => ({
+          isAnimating: false,
+          pendingUnflipCardHolderIds: [],
+        }));
+      }, 1000);
 
-  const handleMismatch = (_card1: any, _card2: any) => {
-    showToast(`残念！違います`, 'error');
-    setGameState(prev => ({
-      ...prev,
-      moves: prev.moves + 1,
-    }));
-  };
+      return () => clearTimeout(timer);
+    }
+  }, [uiState.pendingUnflipCardHolderIds]);
 
-  const handleRestart = (newPairs: number) => {
-    setPairs(newPairs);
-    setGameState(INITIAL_GAME_STATE);
-    setGameKey(prev => prev + 1);
-    setShowCelebration(false);
+  const handleCardClick = (cardHolder: ICardHolder) => {
+    if (uiState.isAnimating) return;
+
+    const { state: newState, flipResult } = flipCard(gameState, cardHolder);
+    switch (flipResult.kind) {
+      case 'match':
+        showToast(`マッチしました！ [${flipResult.cardHolder1.card.rarity}]`, 'success');
+        break;
+      case 'unmatch':
+        showToast(`残念！違います`, 'error');
+        setUiState(_prev => ({
+          isAnimating: true,
+          pendingUnflipCardHolderIds: [flipResult.cardHolder1.id, flipResult.cardHolder2.id],
+        }));
+        break;
+    }
+    setGameState(newState);
+    if (newState.gameCompleted) {
+      onGameComplete();
+    }
   };
 
   return (
@@ -61,20 +66,15 @@ const GameBoard: React.FC = () => {
       <GameInfo
         moves={gameState.moves}
         matches={gameState.matches}
-        onRestart={handleRestart}
         pairs={pairs}
       />
       <CardGrid
-        key={gameKey}
-        pairs={pairs}
-        onMatch={handleMatch}
-        onMismatch={handleMismatch}
+        state={gameState}
+        pendingUnflipCardHolderIds={uiState.pendingUnflipCardHolderIds}
+        onCardClick={handleCardClick}
       />
-      {showCelebration && (
-        <Celebration onClose={() => setShowCelebration(false)} />
-      )}
     </div>
   );
 };
 
-export default GameBoard; 
+export default GameBoard;
