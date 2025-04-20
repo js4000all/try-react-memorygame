@@ -52,66 +52,6 @@
   transform: rotateY(180deg);
 }
 
-.cardFront.A {
-  background-image: url('/assets/card-face01.png');
-  background-position: 0 0;
-}
-
-.cardFront.B {
-  background-image: url('/assets/card-face01.png');
-  background-position: 100% 0;
-}
-
-.cardFront.C {
-  background-image: url('/assets/card-face01.png');
-  background-position: 0 100%;
-}
-
-.cardFront.D {
-  background-image: url('/assets/card-face01.png');
-  background-position: 100% 100%;
-}
-
-.cardFront.E {
-  background-image: url('/assets/card-face02.png');
-  background-position: 0 0;
-}
-
-.cardFront.F {
-  background-image: url('/assets/card-face02.png');
-  background-position: 100% 0;
-}
-
-.cardFront.G {
-  background-image: url('/assets/card-face02.png');
-  background-position: 0 100%;
-}
-
-.cardFront.H {
-  background-image: url('/assets/card-face02.png');
-  background-position: 100% 100%;
-}
-
-.cardFront.I {
-  background-image: url('/assets/card-face03.png');
-  background-position: 0 0;
-}
-
-.cardFront.J {
-  background-image: url('/assets/card-face03.png');
-  background-position: 100% 0;
-}
-
-.cardFront.K {
-  background-image: url('/assets/card-face03.png');
-  background-position: 0 100%;
-}
-
-.cardFront.L {
-  background-image: url('/assets/card-face03.png');
-  background-position: 100% 100%;
-}
-
 .cardBack {
   background-color: #4a90e2;
 } 

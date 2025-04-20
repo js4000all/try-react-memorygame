@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import CardGrid from './CardGrid';
 import GameInfo from './GameInfo';
-import { useToast } from '../contexts/ToastContext';
+import { useToast } from '@/contexts/ToastContext';
 import styles from './GameBoard.module.css';
-
-interface GameState {
-  moves: number;
-  matches: number;
-}
+import { flipCard, initializeGame } from '@/domain/Game';
+import { getCardProvider } from '@/ui/Card';
+import { ICardHolder } from '@/types/gameTypes';
 
 interface GameBoardProps {
   pairs: number;
@@ -15,32 +13,23 @@ interface GameBoardProps {
 }
 
 const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
-  const [gameState, setGameState] = useState<GameState>({
-    moves: 0,
-    matches: 0,
-  });
+  const [gameState, setGameState] = useState(initializeGame(pairs, getCardProvider()));
   const { showToast } = useToast();
 
-  const handleMatch = (_card1: any, _card2: any) => {
-    showToast(`マッチしました！`, 'success');
-    setGameState(prev => {
-      const newState = {
-        moves: prev.moves + 1,
-        matches: prev.matches + 1,
-      };
-      if (newState.matches === pairs) {
-        onGameComplete();
-      }
-      return newState;
-    });
-  };
-
-  const handleMismatch = (_card1: any, _card2: any) => {
-    showToast(`残念！違います`, 'error');
-    setGameState(prev => ({
-      ...prev,
-      moves: prev.moves + 1,
-    }));
+  const handleCardClick = (cardHolder: ICardHolder) => {
+    const {state: newState, flipResult} = flipCard(gameState, cardHolder);
+    switch (flipResult.kind) {
+      case 'match':
+        showToast(`マッチしました！`, 'success');
+        break;
+      case 'unmatch':
+        showToast(`残念！違います`, 'error');
+        break;
+    }
+    setGameState(newState);
+    if(newState.gameCompleted) {
+      onGameComplete();
+    }
   };
 
   return (
@@ -52,12 +41,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ pairs, onGameComplete }) => {
         pairs={pairs}
       />
       <CardGrid
-        pairs={pairs}
-        onMatch={handleMatch}
-        onMismatch={handleMismatch}
+        state={gameState}
+        onCardClick={handleCardClick}
       />
     </div>
   );
 };
 
-export default GameBoard; 
+export default GameBoard;
