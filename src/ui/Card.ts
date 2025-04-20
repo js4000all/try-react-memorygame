@@ -14,7 +14,7 @@ const resources : Record<Rarity, string[]> = {
     [Rarity.EPIC]: [epic_01, epic_02],
 }
 const positions : {[imageIndex: number]: string} = {
-    0: '0, 0',
+    0: '0 0',
     1: '100% 0',
     2: '0 100%',
     3: '100% 100%',
