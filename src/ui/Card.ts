@@ -2,6 +2,7 @@ import { CardProvider, CardFaceProvider, ICard, Rarity, ICardFace } from '../typ
 import common_01 from '../assets/card-face/common_01.png';
 import rare_01 from '../assets/card-face/rare_01.png';
 import rare_02 from '../assets/card-face/rare_02.png';
+import rare_03 from '../assets/card-face/rare_03.png';
 import epic_01 from '../assets/card-face/epic_01.png';
 import epic_02 from '../assets/card-face/epic_02.png';
 import { divmod } from '../utils/math';
@@ -10,7 +11,7 @@ const IMAGES_IN_FILE = 4;
 
 const resources : Record<Rarity, string[]> = {
     [Rarity.COMMON]: [common_01],
-    [Rarity.RARE]: [rare_01, rare_02],
+    [Rarity.RARE]: [rare_01, rare_02, rare_03],
     [Rarity.EPIC]: [epic_01, epic_02],
 }
 const positions : {[imageIndex: number]: string} = {
